@@ -8,6 +8,7 @@ import argparse
 import datetime as dt
 import codecs
 import os
+import logging
 
 urllib3.disable_warnings()
 
@@ -88,6 +89,16 @@ if not silentopts:
     banner()
 else:
     pass
+
+def interruptLog(err):
+    logger = logging.getLogger(err)
+    logger.setLevel(level=logging.DEBUG)
+    consoleHandler = logging.StreamHandler()
+    formatter = logging.Formatter('%(levelname)s: %(message)s')
+    consoleHandler.setFormatter(formatter)
+    logger.addHandler(consoleHandler)
+
+
 def domaincheck(probed):
     if not probed.startswith("http://") and not probed.startswith("https://"):
         probed = 'http://' + probed
@@ -150,16 +161,17 @@ class scscanner:
         with ThreadPoolExecutor(max_workers=worker) as executor:
             with codecs.open(domainlist, encoding="utf-8", errors="strict") as tglist:
                 domainname = tglist.read().splitlines()
-                try:
-                    loopcheck = [executor.submit(scscanner.statuscode, probed) for probed in domainname]
+                loopcheck = [executor.submit(scscanner.statuscode, probed) for probed in domainname]
+                try:     
                     for future in as_completed(loopcheck):
                         if future.result():
                             print(future.result())
                         else:
                             pass
-                except KeyboardInterrupt:
+                except KeyboardInterrupt as err:
                     executor.shutdown(wait=False, cancel_futures=True)
-                    print(f"\n{color.bold}Terminate program. Please wait...{color.reset}")
+                    print(f"\n{color.bold}Terminate program. Please wait for current task pool finished...{color.reset}")
+                    interruptLog(str(err))
 
 if __name__ == '__main__':
     argscheck()

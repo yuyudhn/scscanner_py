@@ -60,7 +60,23 @@ With save to file options.
 ```
 python3 scscanner.py -T list.txt --workers 20 --output asuka.txt
 ```
+### Print debug output
+To avoid this tool "look hang" when caught KeyboardInterrupt (Example: Ctrl+C), we provide debug logging for current pool process before canceling future process. 
+Example:
+```
+.........
+[404] - https://baliuagu.edu.ph/sss
+[200] - https://blog.linuxsec.org
+[200] - https://randomsarl.com
+^C
+Terminate program. Please wait for current task pool finished...
+DEBUG: https://website.informer.com:443 "GET /linuxsec.org HTTP/1.1" 200 None
+DEBUG: https://www.accessify.com:443 "GET /l/linuxsec.org HTTP/1.1" 200 None
+DEBUG: https://www.webtools.link:443 "GET / HTTP/1.1" 302 None
 
+2022-11-26 22:54:36 - Run complete
+
+```
 ## Screenshot
 ![scscanner](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg8vq_xnWyaZT-RB5gbdbsuiI7yd5DtDXlsNr2J51htqvtOkWc92y_TA9TF73t4fb0lUoq7srKOKwnKrPdlZmbx5ZCLeW3zeO_yE-cuOTE1hNLgpd2Al9uraODHv_0pv1H6-pG7oeHZi3WhvBBWgBPqTpa4AYCYbBLllNnVKGzdW4OLvD__5jrHL7Tzcw/s917/scscanner.png "scscanner")
 
