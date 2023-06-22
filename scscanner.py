@@ -8,7 +8,6 @@ import argparse
 import datetime as dt
 import codecs
 import os
-import logging
 
 urllib3.disable_warnings()
 
@@ -42,7 +41,6 @@ output_file = args.output
 
 today = dt.datetime.now()
 dateonly = today.date()
-date_now = str(today.replace(microsecond=0))
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 }
@@ -79,25 +77,16 @@ def argscheck():
 
 def banner():
     print("""
-┏━━┳━━┳━━┳━━┳━━┳━┓┏━┓┏━━┳━┓
-┃━━┫┏━┫━━┫┏━┫┏┓┃┏┓┫┏┓┫┃━┫┏┛
-┣━━┃┗━╋━━┃┗━┫┏┓┃┃┃┃┃┃┃┃━┫┃
-┗━━┻━━┻━━┻━━┻┛┗┻┛┗┻┛┗┻━━┻┛
+ ___  ___ ___  ___ __ _ _ __  _ __   ___ _ __ 
+/ __|/ __/ __|/ __/ _` | '_ \| '_ \ / _ \ '__|
+\__ \ (__\__ \ (_| (_| | | | | | | |  __/ |   
+|___/\___|___/\___\__,_|_| |_|_| |_|\___|_|   
     scscanner - Massive HTTP Status Code Scanner
     """)
 if not silentopts:
     banner()
 else:
     pass
-
-def interruptLog(err):
-    logger = logging.getLogger(err)
-    logger.setLevel(level=logging.DEBUG)
-    consoleHandler = logging.StreamHandler()
-    formatter = logging.Formatter('%(levelname)s: %(message)s')
-    consoleHandler.setFormatter(formatter)
-    logger.addHandler(consoleHandler)
-
 
 def domaincheck(probed):
     if not probed.startswith("http://") and not probed.startswith("https://"):
@@ -169,15 +158,15 @@ class scscanner:
                         else:
                             pass
                 except KeyboardInterrupt as err:
-                    executor.shutdown(wait=False, cancel_futures=True)
-                    print(f"\n{color.bold}Terminate program. Please wait for current task pool finished...{color.reset}")
-                    interruptLog(str(err))
+                    tglist.close()
+                    print(f"{type(err).__name__}")
+                    os._exit(1)
+                finally:
+                    executor.shutdown()
 
 if __name__ == '__main__':
     argscheck()
     try:
-        if not silentopts:
-            print(f"{color.bold}{date_now} - Start program{color.reset}\n")
         if output_file and not silentopts:
             print(f"{color.bold}Your result will be saved at: {color.green}{os.path.join(path, created_dirname)}{color.reset}\n")
         for _ in [0]:
@@ -188,5 +177,4 @@ if __name__ == '__main__':
     except Exception as err:
         print(f"{type(err).__name__} was raised: {err}")
     finally:
-        if not silentopts:
-            print(f"\n{color.bold}{date_now} - Run complete{color.reset}")
+        sys.exit()

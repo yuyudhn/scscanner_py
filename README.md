@@ -16,13 +16,13 @@ Tested on **Debian** with **Python 3.10.8**
 
 ## How to use
 Help menu.
-```
-nino@nakano:~$ python3 scscanner.py --help
+```bash
+➜  scscanner_py git:(main) ✗ python3 scscanner.py 
 
-┏━━┳━━┳━━┳━━┳━━┳━┓┏━┓┏━━┳━┓
-┃━━┫┏━┫━━┫┏━┫┏┓┃┏┓┫┏┓┫┃━┫┏┛
-┣━━┃┗━╋━━┃┗━┫┏┓┃┃┃┃┃┃┃┃━┫┃
-┗━━┻━━┻━━┻━━┻┛┗┻┛┗┻┛┗┻━━┻┛
+ ___  ___ ___  ___ __ _ _ __  _ __   ___ _ __ 
+/ __|/ __/ __|/ __/ _` | '_ \| '_ \ / _ \ '__|
+\__ \ (__\__ \ (_| (_| | | | | | | |  __/ |   
+|___/\___|___/\___\__,_|_| |_|_| |_|\___|_|   
     scscanner - Massive HTTP Status Code Scanner
     
 usage: scscanner.py [-h] [-T list.txt] [-w [15]] [-t google.com] [-f 200] [-s] [-o result.txt]
@@ -38,6 +38,7 @@ options:
   -s, --silent          Silent mode option. Don't print status code output
   -o result.txt, --output result.txt
                         Save the results to file
+
 ```
 Scan domain lists.
 ```
@@ -57,25 +58,8 @@ Silent option, just print url with match status code filter.
 python3 scscanner.py -T lists.txt -s --filter 200 --workers 20
 ```
 With save to file options.
-```
+```bash
 python3 scscanner.py -T list.txt --workers 20 --output asuka.txt
-```
-### Print debug output
-To avoid this tool "look hang" when caught KeyboardInterrupt (Example: Ctrl+C), we provide debug logging for current pool process before canceling future process. 
-Example:
-```
-.........
-[404] - https://baliuagu.edu.ph/sss
-[200] - https://blog.linuxsec.org
-[200] - https://randomsarl.com
-^C
-Terminate program. Please wait for current task pool finished...
-DEBUG: https://website.informer.com:443 "GET /linuxsec.org HTTP/1.1" 200 None
-DEBUG: https://www.accessify.com:443 "GET /l/linuxsec.org HTTP/1.1" 200 None
-DEBUG: https://www.webtools.link:443 "GET / HTTP/1.1" 302 None
-
-2022-11-26 22:54:36 - Run complete
-
 ```
 ## Screenshot
 ![scscanner](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg8vq_xnWyaZT-RB5gbdbsuiI7yd5DtDXlsNr2J51htqvtOkWc92y_TA9TF73t4fb0lUoq7srKOKwnKrPdlZmbx5ZCLeW3zeO_yE-cuOTE1hNLgpd2Al9uraODHv_0pv1H6-pG7oeHZi3WhvBBWgBPqTpa4AYCYbBLllNnVKGzdW4OLvD__5jrHL7Tzcw/s917/scscanner.png "scscanner")
